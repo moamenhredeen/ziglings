@@ -27,10 +27,17 @@ pub fn main() void {
 
     // Glorp the Wise
     chars[0] = Character{
-        .role = Role.wizard,
+        .role = .wizard,
         .gold = 20,
         .health = 100,
         .experience = 10,
+    };
+
+    chars[1] = Character{
+        .role = .wizard,
+        .gold = 10,
+        .health = 100,
+        .experience = 20,
     };
 
     // Please add "Zump the Loud" with the following properties:
@@ -44,9 +51,9 @@ pub fn main() void {
     // it do and why?
 
     // Printing all RPG characters in a loop:
-    for (chars, 0..) |c, num| {
+    for (chars, 0..) |c, i| {
         std.debug.print("Character {} - G:{} H:{} XP:{}\n", .{
-            num + 1, c.gold, c.health, c.experience,
+            i + 1, c.gold, c.health, c.experience,
         });
     }
 }

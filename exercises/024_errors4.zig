@@ -21,9 +21,9 @@ const MyNumberError = error{
 pub fn main() void {
     // The "catch 0" below is a temporary hack to deal with
     // makeJustRight()'s returned error union (for now).
-    const a: u32 = makeJustRight(44) catch 0;
-    const b: u32 = makeJustRight(14) catch 0;
-    const c: u32 = makeJustRight(4) catch 0;
+    const a: u32 = makeJustRight(44);
+    const b: u32 = makeJustRight(14);
+    const c: u32 = makeJustRight(4);
 
     std.debug.print("a={}, b={}, c={}\n", .{ a, b, c });
 }
@@ -36,19 +36,16 @@ pub fn main() void {
 //     fixTooSmall()     Calls detectProblems(), fixes TooSmall errors.
 //     detectProblems()  Returns the number or an error.
 //
-fn makeJustRight(n: u32) MyNumberError!u32 {
-    return fixTooBig(n) catch |err| {
-        return err;
-    };
+fn makeJustRight(n: u32) u32 {
+    return fixTooBig(n);
 }
 
-fn fixTooBig(n: u32) MyNumberError!u32 {
+fn fixTooBig(n: u32) u32 {
     return fixTooSmall(n) catch |err| {
         if (err == MyNumberError.TooBig) {
             return 20;
         }
-
-        return err;
+        return 0;
     };
 }
 
@@ -59,7 +56,12 @@ fn fixTooSmall(n: u32) MyNumberError!u32 {
     // If we get a TooSmall error, we should return 10.
     // If we get any other error, we should return that error.
     // Otherwise, we return the u32 number.
-    return detectProblems(n) ???;
+    return detectProblems(n) catch |err| {
+        if (err == MyNumberError.TooSmall) {
+            return 10;
+        }
+        return err;
+    };
 }
 
 fn detectProblems(n: u32) MyNumberError!u32 {
