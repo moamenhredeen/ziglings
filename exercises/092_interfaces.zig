@@ -79,10 +79,19 @@ const Grasshopper = struct {
     }
 };
 
+const YetAnotherInsect = struct {
+    age: u8,
+
+    pub fn print(self: YetAnotherInsect) void {
+        std.debug.print("this comes from yet another insect with age: {}", .{self.age});
+    }
+};
+
 const Insect = union(enum) {
     ant: Ant,
     bee: Bee,
     grasshopper: Grasshopper,
+    yetAnotherInsect: YetAnotherInsect,
 
     // Thanks to 'inline else', we can think of this print() as
     // being an interface method. Any member of this union with
@@ -106,7 +115,7 @@ pub fn main() !void {
     for (my_insects) |insect| {
         // Almost done! We want to print() each insect with a
         // single method call here.
-        ???
+        insect.print();
     }
 }
 
